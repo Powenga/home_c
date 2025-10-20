@@ -1,14 +1,13 @@
 #include <stdio.h>
 
-int main(void)
-{
+int main(void) {
     /*Let’s
-         go
-           to walk
+      go
+        to walk
     */
-    printf("Let’s\n");
-    printf("   go\n");
-    printf("      to walk\n");
+    printf("Let's\n");
+    printf("  go\n");
+  printf("    to walk\n");
 
     return 0;
 }
