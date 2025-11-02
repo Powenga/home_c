@@ -9,6 +9,10 @@ int main(void) {
         printf("NO");
         return 0;
     }
+    if (a == b == c) {
+        printf("YES");
+        return 0;
+    }
     // find max side
     if (a >= b && a >= c) {
         max = a;
