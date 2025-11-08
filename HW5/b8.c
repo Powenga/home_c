@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main(void) {
-    int input, curr, remainder, count = 0, target = 9;
+    int input, curr, count = 0, target = 9;
     scanf("%d", &input);
 
     while (input > 0) {
