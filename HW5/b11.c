@@ -2,7 +2,6 @@
 
 int main(void) {
     unsigned input, result = 0;
-    unsigned int curr;
     scanf("%u", &input);
 
     while (input > 0) {
