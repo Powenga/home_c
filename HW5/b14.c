@@ -3,13 +3,13 @@
 int main(void) {
     unsigned int input, count = 0;
     while (1) {
-        scanf("%d", &input);
+        scanf("%u", &input);
         if (input == 0) {
             break;
         }
         count++;
     }
 
-    printf("%d", count);
+    printf("%u", count);
     return 0;
 }
