@@ -3,7 +3,7 @@
 int main(void) {
     unsigned int a, b, t;
 
-    scanf("%u %u", a, b);
+    scanf("%u %u", &a, &b);
 
     while (b != 0) {
         t = b;
