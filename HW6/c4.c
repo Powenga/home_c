@@ -30,19 +30,17 @@ int func(int x) {
 
 int main(void) {
     char c;
-    int number = 0;
-    int isNegative = 0;
-    int max = 0;
-    int hasContinue = 1;
+    int number = 0, max = 0;
+    int hasContinue = 1, isNegative = 0;
+
     while (hasContinue) {
         c = getchar();
         if (c == '0' && number == 0) {
             hasContinue = 0;
-        } else if (c == '-') {
+        } else if (c == '-' && number == 0) {
             isNegative = 1;
         } else if (c >= '0' && c <= '9') {
-            int charValue = c - '0';
-            number = number * 10 + charValue;
+            number = number * 10 + c - '0';
         } else {
             if (isNegative) {
                 number *= -1;
