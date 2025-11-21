@@ -25,9 +25,10 @@
 
 #include <stdio.h>
 
-int countCorns(unsigned int count) {
-    unsigned result = 1;
-    for (unsigned int i = 1; i < count; i++, result *= 2) {
+unsigned long long countCorns(unsigned int count) {
+    unsigned long long result = 1;
+    for (unsigned int i = 1; i < count; i++) {
+        result *= 2;
     }
 
     return result;
@@ -36,6 +37,6 @@ int countCorns(unsigned int count) {
 int main(void) {
     unsigned int input = 0;
     scanf("%u", &input);
-    printf("%u", countCorns(input));
+    printf("%llu", countCorns(input));
     return 0;
 }
