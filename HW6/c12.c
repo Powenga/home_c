@@ -21,3 +21,40 @@
 // 0
 // Результат работы
 // 0.000
+
+#include <stdio.h>
+
+float power(float n, int p) {
+    float result = 1;
+    for (int i = 0; i < p; i++) {
+        result *= n;
+    }
+    return result;
+}
+
+int factorial(int n) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result = result * i;
+    }
+    return result;
+}
+
+float sinus(int x) {
+    float rads = x * 3.141 / 180;
+    float result = rads;
+    int sign = -1;
+    int length = 7;
+    for (int i = 3; i <= length; i += 2) {
+        result = result + sign * power(rads, i) / factorial(i);
+        sign *= -1;
+    }
+    return result;
+}
+
+int main(void) {
+    int input;
+    scanf("%d", &input);
+    printf("%.3f", sinus(input));
+    return 0;
+}
