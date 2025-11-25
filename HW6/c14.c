@@ -31,8 +31,8 @@ int summOfNumbers(int num) {
 int isEven(int num) { return num % 2 == 0 ? 1 : 0; }
 
 int main(void) {
-    unsigned input;
-    scanf("%u", &input);
+    int input;
+    scanf("%d", &input);
 
     printf(isEven(summOfNumbers(input)) ? "YES" : "NO");
     return 0;
