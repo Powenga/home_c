@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 
-int translateDecToAny(int num, int base) {
+long long translateDecToAny(int num, int base) {
     if (base < 2 || base > 9) {
         printf("Основание должно быть больше 1 и меньше 10!");
         return 0;
@@ -38,6 +38,6 @@ int main() {
         printf("Введите не отрицательное число!");
     }
 
-    printf("%d", translateDecToAny(input, 2));
+    printf("%lld", translateDecToAny(input, 2));
     return 0;
 }
