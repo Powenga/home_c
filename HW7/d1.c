@@ -10,3 +10,23 @@
 // 5
 // Результат работы
 // 1 2 3 4 5
+
+#include <stdio.h>
+
+int printNum(int num) {
+    if (num > 1) {
+        printNum(num - 1);
+    }
+    printf("%d ", num);
+}
+
+int main() {
+    int input;
+    scanf("%d", &input);
+    if (input <= 0) {
+        printf("Введите натуральное число!");
+    }
+
+    printNum(input);
+    return 0;
+}
