@@ -14,3 +14,23 @@
 // 100
 // Результат работы
 // 5050
+
+#include <stdio.h>
+
+int summNum(int num) {
+    if (num > 0) {
+        return num + summNum(num - 1);
+    }
+    return 0;
+}
+
+int main() {
+    int input;
+    scanf("%d", &input);
+    if (input <= 0) {
+        printf("Введите натуральное число!");
+    }
+
+    printf("%d", summNum(input));
+    return 0;
+}
