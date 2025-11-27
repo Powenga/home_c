@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 
-int printDigits(int num) {
+void printDigits(int num) {
     printf("%d ", num % 10);
     if (num > 9) {
         printDigits(num / 10);

@@ -19,7 +19,7 @@
 
 #include <stdio.h>
 
-int printDigits(int num) {
+void printDigits(int num) {
     if (num > 9) {
         printDigits(num / 10);
     }

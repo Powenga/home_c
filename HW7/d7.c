@@ -13,7 +13,7 @@
 
 #include <stdio.h>
 
-int printNumReverse(int num) {
+void printNumReverse(int num) {
     printf("%d ", num);
     if (num > 1) {
         printNumReverse(num - 1);
