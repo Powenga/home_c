@@ -10,3 +10,23 @@
 // 5
 // Результат работы
 // 5 4 3 2 1
+
+#include <stdio.h>
+
+int printNumReverse(int num) {
+    printf("%d ", num);
+    if (num > 1) {
+        printNumReverse(num - 1);
+    }
+}
+
+int main() {
+    int input;
+    scanf("%d", &input);
+    if (input <= 0) {
+        printf("Введите натуральное число!");
+    }
+
+    printNumReverse(input);
+    return 0;
+}
