@@ -16,3 +16,23 @@
 // 3 4
 // Результат работы
 // 81
+
+#include <stdio.h>
+
+int recursPower(int n, int p) {
+    if (p <= 0) {
+        return 1;
+    }
+    return n * recursPower(n, p - 1);
+}
+
+int main() {
+    int n = 0, p = 0;
+    scanf("%d %d", &n, &p);
+    if (n < -100 || n > 100 || p < 0 || p > 100) {
+        printf("Введите значения в диапазоне: -100 ≤ n ≤ 100 и 0 ≤ p ≤ 100");
+    }
+
+    printf("%d", recursPower(n, p));
+    return 0;
+}
