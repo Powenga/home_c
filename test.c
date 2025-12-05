@@ -1,11 +1,22 @@
 #include <stdio.h>
 
 int main() {
-    int a[3][2];
-    int (*pm)[2];
-    a[1][1] = 146;
-    pm = a;
+    int f[5] = {0};
+    int arr[4] = {0};
+    printf("arr: ");
 
-    printf("%d - %d", a[1][1], pm[1][1]);
+    for (int i = 0; i < 4; i++) {
+        printf("%d ", arr[i]);
+    }
+    int i = 0;
+
+    f[i++] = 3.14;
+
+    printf("\nf: ");
+
+    for (int i = 0; i < 4; i++) {
+        printf("%d ", f[i]);
+    }
+
     return 0;
 }
