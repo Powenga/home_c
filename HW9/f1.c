@@ -2,8 +2,6 @@
 
 #define SIZE 20
 
-static int maxx123() { printf("f1.c"); }
-
 int printIntArray(int arr[], int length) {
     for (int i = 0; i < length; i++) {
         printf("%d ", arr[i]);
@@ -27,7 +25,4 @@ void sort_array(int size, int a[]) {
     }
 }
 
-int main(void) {
-    maxx123();
-    return 0;
-}
+int main(void) { return 0; }
