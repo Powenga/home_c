@@ -39,3 +39,13 @@ void swap(int* a, int* b) {
     *a = *b;
     *b = temp;
 }
+
+int findIntArrayMax(int size, int a[]) {
+    int max = a[0];
+    for (int i = 1; i < size; i++) {
+        if (a[i] > max) {
+            max = a[i];
+        }
+    }
+    return max;
+}
