@@ -33,5 +33,6 @@ int main(void) {
     }
 
     fclose(inputFile);
+    fclose(outputFile);
     return 0;
 }

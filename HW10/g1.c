@@ -21,5 +21,6 @@ int main(void) {
     fprintf(outputFile, "%d", strlen(input));
 
     fclose(inputFile);
+    fclose(outputFile);
     return 0;
 }
