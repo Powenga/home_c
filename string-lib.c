@@ -14,3 +14,26 @@ void printStringDigits(char a[]) {
         }
     }
 }
+
+int getCountCharInWord(char* word, char c) {
+    int count = 0;
+    for (int i = 0; word[i] != '\0'; i++) {
+        if (word[i] == c) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int isAlreadyAdded(char* result, char c) {
+    for (int i = 0; result[i] != '\0'; i++) {
+        if (result[i] == c) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int compareChars(const void* a, const void* b) {
+    return (*(char*)a - *(char*)b);
+}
