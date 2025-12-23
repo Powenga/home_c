@@ -3,7 +3,7 @@
 #include "temperature_record.h"
 
 int8_t get_month_average_temp(temperature_record_t year[], uint8_t size,
-                              uint8_t month, uint8_t* p_average_temp) {
+                              uint8_t month, int8_t* p_average_temp) {
     int8_t result = 0;  // success boolean
     int8_t month_sum = 0;
     uint8_t month_count = 0;
@@ -69,7 +69,7 @@ int8_t get_month_max_temp(temperature_record_t* year, uint8_t size,
 };
 
 int8_t get_year_average_temp(temperature_record_t year[], uint8_t size,
-                             uint8_t* p_average_temp) {
+                             int8_t* p_average_temp) {
     int8_t result = 0;
     int8_t sum = 0;
     uint8_t count = 0;
