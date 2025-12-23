@@ -22,8 +22,10 @@ int8_t get_year_average_temp(temperature_record_t year[], uint8_t size) {
     int8_t sum = 0;
     uint8_t count = 0;
     for (size_t i = 0; i < size; i++) {
-        sum += year[i].temperature;
-        count++;
+        if (year[i].valid) {
+            sum += year[i].temperature;
+            count++;
+        }
     }
     return sum / count;
 };

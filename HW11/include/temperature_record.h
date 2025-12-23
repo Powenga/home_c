@@ -9,6 +9,7 @@ struct temperature_record {
     uint8_t hours;
     uint8_t minutes;
     int8_t temperature;
+    uint8_t valid;
 };
 
 typedef struct temperature_record temperature_record_t;
