@@ -24,4 +24,14 @@ int8_t get_year_min_temp(temperature_record_t year[], uint8_t size) {
     }
     return min;
 };
-int8_t get_year_max_temp(temperature_record_t* year) {};
+
+int8_t get_year_max_temp(temperature_record_t year[], uint8_t size) {
+    int8_t max = year[0].temperature;
+    for (size_t i = 1; i < size; i++) {
+        int8_t current_temp = year[i].temperature;
+        if (current_temp > max) {
+            max = current_temp;
+        }
+    }
+    return max;
+};
