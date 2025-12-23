@@ -4,7 +4,7 @@
 
 int8_t get_month_average_temp(temperature_record_t year[], uint8_t size,
                               uint8_t month, int8_t* p_average_temp) {
-    int8_t result = 0;  // success boolean
+    int8_t result = 0;  // true if valid data exists
     int8_t month_sum = 0;
     uint8_t month_count = 0;
     for (size_t i = 0; i < size; i++) {
@@ -15,7 +15,7 @@ int8_t get_month_average_temp(temperature_record_t year[], uint8_t size,
         if (year[i].month == month) {
             month_sum += year[i].temperature;
             month_count++;
-            result = 1;  // Some date is valid
+            result = 1;  // Some data is valid
         }
     }
     if (result) {
@@ -26,7 +26,7 @@ int8_t get_month_average_temp(temperature_record_t year[], uint8_t size,
 
 int8_t get_month_min_temp(temperature_record_t year[], uint8_t size,
                           uint8_t month, int8_t* p_min_temp) {
-    int8_t result = 0;  // success boolean
+    int8_t result = 0;  // true if valid data exists in month
     // Find first
     for (size_t i = 0; i < size; i++) {
         // Skip not valid data or other month
@@ -48,7 +48,7 @@ int8_t get_month_min_temp(temperature_record_t year[], uint8_t size,
 
 int8_t get_month_max_temp(temperature_record_t* year, uint8_t size,
                           uint8_t month, int8_t* p_max_temp) {
-    int8_t result = 0;  // success boolean
+    int8_t result = 0;  // true if valid data exists in month
     // Find first
     for (size_t i = 0; i < size; i++) {
         // Skip not valid data or other month
@@ -70,7 +70,7 @@ int8_t get_month_max_temp(temperature_record_t* year, uint8_t size,
 
 int8_t get_year_average_temp(temperature_record_t year[], uint8_t size,
                              int8_t* p_average_temp) {
-    int8_t result = 0;
+    int8_t result = 0;  // true if valid data exists in year
     int8_t sum = 0;
     uint8_t count = 0;
     for (size_t i = 0; i < size; i++) {
@@ -90,7 +90,7 @@ int8_t get_year_average_temp(temperature_record_t year[], uint8_t size,
 
 int8_t get_year_min_temp(temperature_record_t year[], uint8_t size,
                          int8_t* p_min_temp) {
-    int8_t result = 0;  // success boolean
+    int8_t result = 0;  // true if valid data exists in year
     for (size_t i = 0; i < size; i++) {
         // Skip not valid data
         if (!year[i].valid) {
@@ -111,7 +111,7 @@ int8_t get_year_min_temp(temperature_record_t year[], uint8_t size,
 
 int8_t get_year_max_temp(temperature_record_t year[], uint8_t size,
                          int8_t* p_max_temp) {
-    int8_t result = 0;  // success boolean
+    int8_t result = 0;  // true if valid data exists in year
     for (size_t i = 0; i < size; i++) {
         // Skip not valid data
         if (!year[i].valid) {
