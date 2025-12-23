@@ -1,3 +1,5 @@
+#ifndef TEMPERATURE_RECORD_H
+#define TEMPERATURE_RECORD_H
 #include <stdint.h>
 
 struct temperature_record {
@@ -10,3 +12,5 @@ struct temperature_record {
 };
 
 typedef struct temperature_record temperature_record_t;
+
+#endif
