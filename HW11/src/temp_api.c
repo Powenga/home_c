@@ -20,10 +20,12 @@ int8_t get_month_max_temp(temperature_record_t* year, uint8_t month) {};
 
 int8_t get_year_average_temp(temperature_record_t year[], uint8_t size) {
     int8_t sum = 0;
+    uint8_t count = 0;
     for (size_t i = 0; i < size; i++) {
         sum += year[i].temperature;
+        count++;
     }
-    return sum / size;
+    return sum / count;
 };
 
 int8_t get_year_min_temp(temperature_record_t year[], uint8_t size) {
