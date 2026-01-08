@@ -1,10 +1,13 @@
 #include <stdio.h>
 
-#include "../include/temp_api.h"
-#include "../include/temperature_record.h"
+#include "temp_api.h"
+#include "temperature_record.h"
 
 #define YEAR_SIZE 365
 
 temperature_record_t year[YEAR_SIZE];
 
-int main(void) { return 0; }
+int main(void) {
+    printf("RUN");
+    return 0;
+}
