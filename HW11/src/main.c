@@ -7,7 +7,4 @@
 
 temperature_record_t year[YEAR_SIZE];
 
-int main(void) {
-    printf("Sizeof s1 = %lu\n");
-    return 0;
-}
+int main(void) { return 0; }
