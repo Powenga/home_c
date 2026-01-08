@@ -10,22 +10,25 @@ INCLUDE = include
 # exe file name
 TARGET = $(BIN)/app
 
-# folders
-$(shell mkdir $(OBJ) $(BIN))
+all: create_dirs $(BIN)/app
 
-all: $(BIN)/app
+create_dirs:
+	if not exist obj mkdir obj
+	if not exist bin mkdir bin
 
 $(BIN)/app: $(OBJ)/main.o $(OBJ)/utils.o $(OBJ)/temp_api.o
-	$(CC) $(OBJ)/main.o $(OBJ)/utils.o $(OBJ)/temp_api.o -o $(BIN)/app
+	if not exist $(OBJ) mkdir $(OBJ)
+	if not exist $(BIN) mkdir $(BIN)
+	gcc $(OBJ)/main.o $(OBJ)/utils.o $(OBJ)/temp_api.o -o $(BIN)/app
 
 $(OBJ)/main.o: $(SRC)/main.c $(INCLUDE)/temp_api.h $(INCLUDE)/temperature_record.h
-	$(CC) -Wall -Iinclude -c $(SRC)/main.c -o $(OBJ)/main.o
+	gcc -Wall -Iinclude -c $(SRC)/main.c -o $(OBJ)/main.o
 
 $(OBJ)/utils.o: $(SRC)/utils.c $(INCLUDE)/utils.h $(INCLUDE)/temperature_record.h
-	$(CC) -Wall -Iinclude -c $(SRC)/utils.c -o $(OBJ)/utils.o
+	gcc -Wall -Iinclude -c $(SRC)/utils.c -o $(OBJ)/utils.o
 
 $(OBJ)/temp_api.o: $(SRC)/temp_api.c $(INCLUDE)/temp_api.h $(INCLUDE)/temperature_record.h
-	$(CC) -Wall -Iinclude -c $(SRC)/temp_api.c -o $(OBJ)/temp_api.o
+	gcc -Wall -Iinclude -c $(SRC)/temp_api.c -o $(OBJ)/temp_api.o
 
 clean:
 	if exist obj rmdir /s /q obj
