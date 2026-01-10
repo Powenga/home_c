@@ -1,4 +1,6 @@
+#include <conio.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "temp_api.h"
@@ -6,7 +8,13 @@
 
 #define YEAR_SIZE 365
 
+enum Mode { YEAR, MONTH };
+
 temperature_record_t year[YEAR_SIZE];
+
+enum Mode mode = YEAR;
+uint8_t current_month = 0;
+char* file_path;
 
 int main(int argc, char* argv[]) {
     int result = 0;  // argument paramers
@@ -23,14 +31,23 @@ int main(int argc, char* argv[]) {
                     "\n");
                 printf(
                     "\t-m month_number - Specify month number to show month "
-                    "statistics, 0 - january;"
+                    "statistics, 0 - January."
                     "\n");
                 break;
             case 'f':
-                printf("Found file \"f = %s\"\n", optarg);
+                file_path = optarg;
                 break;
             case 'm':
-                printf("Found month \"f = %s\"\n", optarg);
+                char* endptr;
+                long value;
+                value = strtol(optarg, &endptr, 10);
+
+                if (*endptr != '\0' || value < 0 || value > 11) {
+                    printf("Invalid month parameter: %s\n", optarg);
+                    return 1;
+                }
+
+                current_month = (uint8_t)value;
                 break;
             case '?':
                 printf("Unknown argument \n");
@@ -41,7 +58,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    printf("\nPress q to quit...\n");
-    while (fgetc(stdin) != 'q');
+    printf("\nPress any key to quit...\n");
+    _getch();
     return 0;
 }
