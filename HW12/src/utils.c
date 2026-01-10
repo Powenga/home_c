@@ -60,6 +60,20 @@ void increment_minute(uint16_t* year, uint8_t* month, uint8_t* day,
     (*year)++;
 }
 
+void increment_day(uint16_t* year, uint8_t* month, uint8_t* day) {
+    (*day)++;
+
+    if (*day <= days_in_month(*year, *month)) return;
+
+    *day = 1;
+    (*month)++;
+
+    if (*month <= 12) return;
+
+    *month = 1;
+    (*year)++;
+}
+
 int temp_record_comparator_by_date(const void* a, const void* b) {
     temperature_record_t* first_ptr = (temperature_record_t*)a;
     temperature_record_t* second_ptr = (temperature_record_t*)b;

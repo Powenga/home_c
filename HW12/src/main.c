@@ -26,6 +26,7 @@ int8_t max;
 int8_t average;
 
 void print_summary(int8_t* min, int8_t* max, int8_t* average) {
+    printf("===========================================\n");
     printf("Max: %3dC; Min: %3dC; Average: %3dC.\n", *min, *max, *average);
 }
 
@@ -38,7 +39,7 @@ int main(int argc, char* argv[]) {
     srand(time(NULL));
 
     // Generate random records
-    data.size = create_temperature_records(data.records, 75);
+    data.size = create_temperature_records(data.records, 300);
 
     int result = 0;  // argument paramers
     opterr = 0;      // hide error message
@@ -55,7 +56,7 @@ int main(int argc, char* argv[]) {
                 long value;
                 value = strtol(optarg, &endptr, 10);
 
-                if (*endptr != '\0' || value < 0 || value > 11) {
+                if (*endptr != '\0' || value < 1 || value > 12) {
                     printf("Invalid month parameter: %s\n", optarg);
                     wait_for_key();
                     return 1;
@@ -82,8 +83,7 @@ int main(int argc, char* argv[]) {
             "data;"
             "\n");
         printf(
-            "\t-m month_number - Specify month number to show month "
-            "statistics, 0 - January."
+            "\t-m month_number - Specify month number to show month statistics"
             "\n");
         wait_for_key();
         return 0;
@@ -95,17 +95,22 @@ int main(int argc, char* argv[]) {
             !get_month_max_temp(data.records, data.size, current_month, &max) ||
             !get_month_average_temp(data.records, data.size, current_month,
                                     &average)) {
-            printf("No data relates to the month.");
+            printf("No data relates to the month: %d.\n", current_month);
             wait_for_key();
             return 0;
         }
+        print_temperature_records_by_month(data.records, data.size,
+                                           current_month);
+        print_summary(&min, &max, &average);
+        wait_for_key();
+        return 0;
     }
 
     // Year statistics
     if (!get_year_min_temp(data.records, data.size, &min) ||
         !get_year_max_temp(data.records, data.size, &max) ||
         !get_year_average_temp(data.records, data.size, &average)) {
-        printf("No data.");
+        printf("No data.\n");
         wait_for_key();
         return 0;
     }
