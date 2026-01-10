@@ -106,3 +106,14 @@ uint16_t create_temperature_records(temperature_record_t* data, int16_t count) {
     }
     return count;
 }
+
+void print_temperature_records(temperature_record_t* data, int16_t count) {
+    for (int16_t i = 0; i < count; i++) {
+        if (!data[i].valid) {
+            continue;
+        }
+        printf("%04d-%02d-%02dT%02d:%02d t=%3d", data[i].year, data[i].month,
+               data[i].day, data[i].hours, data[i].minutes,
+               data[i].temperature);
+    }
+}
