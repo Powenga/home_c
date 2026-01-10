@@ -1,5 +1,6 @@
 # gcc
 СС = gcc
+CFLAGS = -Wall -Wextra -g -Iinclude
 
 # Folders
 SRC = src
@@ -19,16 +20,16 @@ create_dirs:
 $(BIN)/app: $(OBJ)/main.o $(OBJ)/utils.o $(OBJ)/temp_api.o
 	if not exist $(OBJ) mkdir $(OBJ)
 	if not exist $(BIN) mkdir $(BIN)
-	gcc $(OBJ)/main.o $(OBJ)/utils.o $(OBJ)/temp_api.o -o $(BIN)/app
+	$(CC) $(CFLAGS) $(OBJ)/main.o $(OBJ)/utils.o $(OBJ)/temp_api.o -o $(BIN)/app
 
 $(OBJ)/main.o: $(SRC)/main.c $(INCLUDE)/temp_api.h $(INCLUDE)/temperature_record.h
-	gcc -Wall -Iinclude -c $(SRC)/main.c -o $(OBJ)/main.o
+	$(CC) $(CFLAGS) -c $(SRC)/main.c -o $(OBJ)/main.o
 
 $(OBJ)/utils.o: $(SRC)/utils.c $(INCLUDE)/utils.h $(INCLUDE)/temperature_record.h
-	gcc -Wall -Iinclude -c $(SRC)/utils.c -o $(OBJ)/utils.o
+	$(CC) $(CFLAGS) -c $(SRC)/utils.c -o $(OBJ)/utils.o
 
 $(OBJ)/temp_api.o: $(SRC)/temp_api.c $(INCLUDE)/temp_api.h $(INCLUDE)/temperature_record.h
-	gcc -Wall -Iinclude -c $(SRC)/temp_api.c -o $(OBJ)/temp_api.o
+	$(CC) $(CFLAGS) -c $(SRC)/temp_api.c -o $(OBJ)/temp_api.o
 
 clean:
 	if exist obj rmdir /s /q obj
