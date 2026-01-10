@@ -18,6 +18,10 @@
 /bin/
 /Debug/
 /Release/
+**/bin/
+**/obj/
+**/build/
+**/out/
 
 # Файлы среды разработки
 .vscode/
