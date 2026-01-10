@@ -163,13 +163,14 @@ int8_t remove_record(temperature_record_t* data, uint16_t* count,
     return 1;
 }
 
-uint16_t create_temperature_records(temperature_record_t* data, int16_t count) {
+uint16_t create_temperature_records(temperature_record_t* data,
+                                    uint16_t count) {
     uint16_t year = 1970;
     uint8_t month = 1;
     uint8_t day = 1;
     uint8_t hours = 0;
     uint8_t minutes = 1;
-    for (int16_t i = 0; i < count; i++) {
+    for (uint16_t i = 0; i < count; i++) {
         int8_t temperature = (int8_t)(rand() % 201 - 100);  // [-100; 100]
         add_record(data, i, year, month, day, hours, minutes, temperature);
         increment_minute(&year, &month, &day, &hours, &minutes);
@@ -177,18 +178,19 @@ uint16_t create_temperature_records(temperature_record_t* data, int16_t count) {
     return count;
 }
 
-void print_temperature_records(temperature_record_t* data, int16_t count) {
+static void sort_temperature_records_by_date(temperature_record_t* data,
+                                             uint16_t count) {
+    qsort(data, count, sizeof(uint16_t), temp_record_comparator_by_date);
+}
+
+void print_temperature_records(temperature_record_t* data, uint16_t count) {
+    sort_temperature_records_by_date(data, count);
     for (int16_t i = 0; i < count; i++) {
         if (!data[i].valid) {
             continue;
         }
-        printf("%04d-%02d-%02dT%02d:%02d t=%3d", data[i].year, data[i].month,
-               data[i].day, data[i].hours, data[i].minutes,
+        printf("%03d. %04d-%02d-%02dT%02d:%02d t=%3d\n", i + 1, data[i].year,
+               data[i].month, data[i].day, data[i].hours, data[i].minutes,
                data[i].temperature);
     }
-}
-
-void sort_temperature_records_by_date(temperature_record_t* data,
-                                      uint16_t count) {
-    qsort(data, count, sizeof(int), temp_record_comparator_by_date);
 }
