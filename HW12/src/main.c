@@ -1,6 +1,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "temp_api.h"
@@ -17,6 +18,8 @@ uint8_t current_month = 0;
 char* file_path;
 
 int main(int argc, char* argv[]) {
+    srand(time(NULL));
+
     int result = 0;  // argument paramers
     opterr = 0;      // hide error message
     while ((result = getopt(argc, argv, "hf:m:")) != -1) {
