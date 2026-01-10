@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "temperature_record.h"
 
 uint64_t date_to_int(temperature_record_t* record) {
@@ -21,9 +19,8 @@ static uint8_t days_in_month(uint16_t year, uint8_t month) {
     return days[month - 1];
 }
 
-static uint8_t validate_record(uint16_t year, uint8_t month, uint8_t day,
-                               uint8_t hours, uint8_t minutes,
-                               int8_t temperature) {
+uint8_t validate_record(uint16_t year, uint8_t month, uint8_t day,
+                        uint8_t hours, uint8_t minutes, int8_t temperature) {
     if (year < 1970 || year > 2100) return 0;
 
     if (month < 1 || month > 12) return 0;
@@ -35,41 +32,11 @@ static uint8_t validate_record(uint16_t year, uint8_t month, uint8_t day,
     if (minutes > 59) return 0;
 
     if (temperature < -100 || temperature > 100) return 0;
-}
-
-uint8_t add_record(temperature_record_t* data, uint16_t position, uint16_t year,
-                   uint8_t month, uint8_t day, uint8_t hours, uint8_t minutes,
-                   int8_t temperature) {
-    uint8_t valid =
-        validate_record(year, month, day, hours, minutes, temperature);
-    if (!valid) {
-        return 0;
-    }
-    data[position].year = year;
-    data[position].month = month;
-    data[position].day = day;
-    data[position].hours = hours;
-    data[position].minutes = minutes;
-    data[position].temperature = temperature;
-    data[position].valid = valid;
     return 1;
 }
 
-int8_t remove_record(temperature_record_t* data, uint16_t* count,
-                     uint16_t index) {
-    if (index >= *count) {
-        return 0;
-    }
-
-    for (uint16_t i = index; i < -*count - 1; i++) {
-        data[i] = data[i + 1];
-    }
-    (*count)--;
-    return 1;
-}
-
-static void increment_minute(uint16_t* year, uint8_t* month, uint8_t* day,
-                             uint8_t* hours, uint8_t* minutes) {
+void increment_minute(uint16_t* year, uint8_t* month, uint8_t* day,
+                      uint8_t* hours, uint8_t* minutes) {
     (*minutes)++;
 
     if (*minutes < 60) return;
@@ -91,29 +58,4 @@ static void increment_minute(uint16_t* year, uint8_t* month, uint8_t* day,
 
     *month = 1;
     (*year)++;
-}
-
-uint16_t create_temperature_records(temperature_record_t* data, int16_t count) {
-    uint16_t year = 1970;
-    uint8_t month = 1;
-    uint8_t day = 1;
-    uint8_t hours = 0;
-    uint8_t minutes = 1;
-    for (int16_t i = 0; i < count; i++) {
-        int8_t temperature = (int8_t)(rand() % 201 - 100);  // [-100; 100]
-        add_record(data, i, year, month, day, hours, minutes, temperature);
-        increment_minute(&year, &month, &day, &hours, &minutes);
-    }
-    return count;
-}
-
-void print_temperature_records(temperature_record_t* data, int16_t count) {
-    for (int16_t i = 0; i < count; i++) {
-        if (!data[i].valid) {
-            continue;
-        }
-        printf("%04d-%02d-%02dT%02d:%02d t=%3d", data[i].year, data[i].month,
-               data[i].day, data[i].hours, data[i].minutes,
-               data[i].temperature);
-    }
 }
