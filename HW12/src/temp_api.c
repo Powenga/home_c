@@ -7,7 +7,7 @@
 int8_t get_month_average_temp(temperature_record_t* records, uint16_t size,
                               uint8_t month, int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists
-    int8_t month_sum = 0;
+    int16_t month_sum = 0;
     uint8_t month_count = 0;
     for (uint16_t i = 0; i < size; i++) {
         if (!records[i].valid) {
@@ -73,7 +73,7 @@ int8_t get_month_max_temp(temperature_record_t* records, uint16_t size,
 int8_t get_year_average_temp(temperature_record_t* records, uint16_t size,
                              int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists in year
-    int8_t sum = 0;
+    int16_t sum = 0;
     uint8_t count = 0;
     for (size_t i = 0; i < size; i++) {
         if (!records[i].valid) {
