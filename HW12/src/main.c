@@ -15,13 +15,14 @@ int main(int argc, char* argv[]) {
         switch (result) {
             case 'h':
                 printf("Shows temperature statistics by year or month.\n");
-                printf("Usage: app [options].\n");
-                printf("-h - Help text;  \n");
+                printf("Usage: %s -f path/to/file.csv -m 11.\n", argv[0]);
+                printf("\t-h - Help text;  \n");
                 printf(
-                    "-f path/to/file.csv - Specify file with temperature data;"
+                    "\t-f path/to/file.csv - Specify file with temperature "
+                    "data;"
                     "\n");
                 printf(
-                    "-m month_number - Specify month number to show month "
+                    "\t-m month_number - Specify month number to show month "
                     "statistics, 0 - january;"
                     "\n");
                 break;
@@ -35,8 +36,12 @@ int main(int argc, char* argv[]) {
                 printf("Unknown argument \n");
                 break;
             default:
+                printf("Usage: %s -f path/to/file.csv -m 11.\n", argv[0]);
                 break;
         }
     }
+
+    printf("\nPress q to quit...\n");
+    while (fgetc(stdin) != 'q');
     return 0;
 }
