@@ -1,36 +1,48 @@
-# gcc
-СС = gcc
+# Компилятор и флаги
+CC = gcc
 CFLAGS = -Wall -Wextra -g -Iinclude
 
-# Folders
+# Папки
 SRC = src
 OBJ = obj
 BIN = bin
 INCLUDE = include
 
-# exe file name
+# Имя исполняемого файла
 TARGET = $(BIN)/app
 
-all: create_dirs $(BIN)/app
+# Список исходников
+SRCS = $(SRC)/main.c $(SRC)/utils.c $(SRC)/temp_api.c
+OBJS = $(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
 
-create_dirs:
-	if not exist obj mkdir obj
-	if not exist bin mkdir bin
+# Определяем ОС
+ifeq ($(OS),Windows_NT)
+    MKDIR = if not exist $(1) mkdir $(1)
+    RM = if exist $(1) rmdir /s /q $(1)
+else
+    MKDIR = mkdir -p $(1)
+    RM = rm -rf $(1)
+endif
 
-$(BIN)/app: $(OBJ)/main.o $(OBJ)/utils.o $(OBJ)/temp_api.o
-	if not exist $(OBJ) mkdir $(OBJ)
-	if not exist $(BIN) mkdir $(BIN)
-	$(CC) $(CFLAGS) $(OBJ)/main.o $(OBJ)/utils.o $(OBJ)/temp_api.o -o $(BIN)/app
+# Правило по умолчанию
+all: $(TARGET)
 
-$(OBJ)/main.o: $(SRC)/main.c $(INCLUDE)/temp_api.h $(INCLUDE)/temperature_record.h
-	$(CC) $(CFLAGS) -c $(SRC)/main.c -o $(OBJ)/main.o
+# Создание папок
+$(OBJ):
+	$(call MKDIR,$@)
 
-$(OBJ)/utils.o: $(SRC)/utils.c $(INCLUDE)/utils.h $(INCLUDE)/temperature_record.h
-	$(CC) $(CFLAGS) -c $(SRC)/utils.c -o $(OBJ)/utils.o
+$(BIN):
+	$(call MKDIR,$@)
 
-$(OBJ)/temp_api.o: $(SRC)/temp_api.c $(INCLUDE)/temp_api.h $(INCLUDE)/temperature_record.h
-	$(CC) $(CFLAGS) -c $(SRC)/temp_api.c -o $(OBJ)/temp_api.o
+# Сборка приложения
+$(TARGET): $(OBJS) | $(BIN)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
 
+# Компиляция объектов
+$(OBJ)/%.o: $(SRC)/%.c | $(OBJ)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Очистка
 clean:
-	if exist obj rmdir /s /q obj
-	if exist bin rmdir /s /q bin
+	$(call RM,$(OBJ))
+	$(call RM,$(BIN))
