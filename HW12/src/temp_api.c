@@ -187,3 +187,8 @@ void print_temperature_records(temperature_record_t* data, int16_t count) {
                data[i].temperature);
     }
 }
+
+void sort_temperature_records_by_date(temperature_record_t* data,
+                                      uint16_t count) {
+    qsort(data, count, sizeof(int), temp_record_comparator_by_date);
+}
