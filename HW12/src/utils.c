@@ -24,6 +24,19 @@ void add_record(temperature_record_t* data, uint16_t position, uint16_t year,
     return 1;
 }
 
+void remove_record(temperature_record_t* data, uint16_t* count,
+                   uint16_t index) {
+    if (index >= *count) {
+        return 0;
+    }
+
+    for (uint16_t i = index; i < -*count - 1; i++) {
+        data[i] = data[i + 1];
+    }
+    (*count)--;
+    return 1;
+}
+
 static uint8_t is_leap_year(uint16_t year) {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
