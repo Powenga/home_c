@@ -21,8 +21,8 @@ static uint8_t days_in_month(uint16_t year, uint8_t month) {
     return days[month - 1];
 }
 
-uint8_t validate_record(uint16_t year, uint8_t month, uint8_t day,
-                        uint8_t hours, uint8_t minutes, int8_t temperature) {
+uint8_t validate_record(int year, int month, int day, int hours, int minutes,
+                        int temperature) {
     if (year < 1970 || year > 2100) return 0;
 
     if (month < 1 || month > 12) return 0;

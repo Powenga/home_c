@@ -200,40 +200,8 @@ uint8_t init_temperature_array(Records* data, uint16_t count) {
     return 1;
 }
 
-uint8_t generate_temperature_records(Records* data, uint16_t size) {
-    if (!init_temperature_array(data, size)) {
-        return 0;
-    }
-
-    uint16_t year = 1970;
-    uint8_t month = 1;
-    uint8_t day = 1;
-    uint8_t hours = 0;
-    uint8_t minutes = 1;
-
-    for (uint16_t i = 0; i < size; i++) {
-        int8_t temperature = (int8_t)(rand() % 201 - 100);  // [-100; 100]
-        if (validate_record(year, month, day, hours, minutes, temperature)) {
-            if (!add_record(data, year, month, day, hours, minutes,
-                            temperature)) {
-                return 0;
-            }
-        }
-
-        increment_day(&year, &month, &day);
-    }
-    return 1;
-}
-
-static void sort_temperature_records_by_date(TemperatureRecord* records,
-                                             uint16_t size) {
+void sort_temperature_records_by_date(TemperatureRecord* records,
+                                      uint16_t size) {
     qsort(records, size, sizeof(TemperatureRecord),
           temp_record_comparator_by_date);
 }
-
-static void print_record(TemperatureRecord* record,
-                         uint16_t increment_position) {
-    printf("%03d. %04d-%02d-%02dT%02d:%02d t=%3d\n", increment_position,
-           record->year, record->month, record->day, record->hours,
-           record->minutes, record->temperature);
-};

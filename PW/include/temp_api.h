@@ -17,11 +17,12 @@ int8_t get_year_min_temp(TemperatureRecord* records, uint16_t size,
                          int8_t* p_min_temp);
 int8_t get_year_max_temp(TemperatureRecord* records, uint16_t size,
                          int8_t* p_max_temp);
-int8_t add_record(TemperatureRecord* records, uint16_t position, uint16_t year,
-                  uint8_t month, uint8_t day, uint8_t hours, uint8_t minutes,
-                  int8_t temperature);
+uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
+                   uint8_t hours, uint8_t minutes, int8_t temperature);
 int8_t remove_record(TemperatureRecord* records, uint16_t* size,
                      uint16_t index);
-uint16_t generate_temperature_records(Records* data, uint16_t size);
+uint8_t init_temperature_array(Records* data, uint16_t count);
+void sort_temperature_records_by_date(TemperatureRecord* records,
+                                      uint16_t size);
 
 #endif
