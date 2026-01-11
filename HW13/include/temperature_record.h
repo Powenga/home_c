@@ -18,7 +18,7 @@ typedef struct TemperatureRecord TemperatureRecord;
 struct Records {
     TemperatureRecord* records;  // ptr to first elem of data
     uint16_t size;               // current size
-    uint16_t capacity;           // max capacity
+    uint16_t capacity;           // max capacity ~ 65536 * 8 = 512 КБ
 };
 
 typedef struct Records Records;

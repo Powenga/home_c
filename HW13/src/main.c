@@ -34,7 +34,10 @@ int main(int argc, char* argv[]) {
     srand(time(NULL));
 
     // Generate random records
-    generate_temperature_records(&data, 300);
+    if (!generate_temperature_records(&data, 400)) {
+        printf("Memory error.");
+        return 0;
+    };
 
     int result = 0;  // argument paramers
     opterr = 0;      // hide error message
