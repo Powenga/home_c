@@ -14,4 +14,13 @@ struct TemperatureRecord {
 
 typedef struct TemperatureRecord TemperatureRecord;
 
+// Dynamic array
+struct Records {
+    TemperatureRecord* records;  // ptr to first elem of data
+    uint16_t size;               // current size
+    uint16_t capacity;           // max capacity
+};
+
+typedef struct Records Records;
+
 #endif

@@ -132,21 +132,33 @@ int8_t get_year_max_temp(TemperatureRecord* records, uint16_t size,
     return result;
 };
 
-uint8_t add_record(TemperatureRecord* records, uint16_t position, uint16_t year,
-                   uint8_t month, uint8_t day, uint8_t hours, uint8_t minutes,
-                   int8_t temperature) {
+uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
+                   uint8_t hours, uint8_t minutes, int8_t temperature) {
     uint8_t valid =
         validate_record(year, month, day, hours, minutes, temperature);
     if (!valid) {
         return 0;
     }
-    records[position].year = year;
-    records[position].month = month;
-    records[position].day = day;
-    records[position].hours = hours;
-    records[position].minutes = minutes;
-    records[position].temperature = temperature;
-    records[position].valid = valid;
+    // If records is full
+    if (data->capacity == data->size) {
+        data->capacity = data->capacity * 2;
+        data->records =
+            realloc(data->records, data->capacity * sizeof(TemperatureRecord));
+        // Check memory realloccation
+        if (data->records == NULL) {
+            data->capacity = data->capacity / 2;
+            return 0;
+        }
+    }
+    uint16_t new_elem_index = data->size;
+    data->records[new_elem_index].year = year;
+    data->records[new_elem_index].month = month;
+    data->records[new_elem_index].day = day;
+    data->records[new_elem_index].hours = hours;
+    data->records[new_elem_index].minutes = minutes;
+    data->records[new_elem_index].temperature = temperature;
+    data->records[new_elem_index].valid = valid;
+    data->size++;
     return 1;
 }
 
@@ -163,15 +175,30 @@ int8_t remove_record(TemperatureRecord* records, uint16_t* size,
     return 1;
 }
 
-uint16_t create_temperature_records(TemperatureRecord* records, uint16_t size) {
+uint8_t init_temperature_array(Records* data, uint16_t count) {
+    data->capacity = count;
+    data->size = 0;
+    data->records = malloc(count * sizeof(TemperatureRecord));
+    // Check memory allocation
+    if (data->records == NULL) {
+        data->capacity = 0;
+        return 0;
+    }
+    return 1;
+}
+
+uint16_t generate_temperature_records(Records* data, uint16_t size) {
+    init_temperature_array(data, size);
+
     uint16_t year = 1970;
     uint8_t month = 1;
     uint8_t day = 1;
     uint8_t hours = 0;
     uint8_t minutes = 1;
+
     for (uint16_t i = 0; i < size; i++) {
         int8_t temperature = (int8_t)(rand() % 201 - 100);  // [-100; 100]
-        add_record(records, i, year, month, day, hours, minutes, temperature);
+        add_record(data, year, month, day, hours, minutes, temperature);
         increment_day(&year, &month, &day);
     }
     return size;

@@ -7,8 +7,6 @@
 #include "temp_api.h"
 #include "temperature_record.h"
 
-#define SIZE 300
-
 enum Mode { YEAR, MONTH };
 enum Mode mode = YEAR;
 uint8_t show_help = 0;
@@ -16,10 +14,7 @@ uint8_t show_help = 0;
 uint8_t current_month = 0;
 char* file_path;
 
-struct {
-    uint16_t size;
-    TemperatureRecord records[SIZE];
-} data;
+Records data;
 
 int8_t min;
 int8_t max;
@@ -39,7 +34,7 @@ int main(int argc, char* argv[]) {
     srand(time(NULL));
 
     // Generate random records
-    data.size = create_temperature_records(data.records, 300);
+    generate_temperature_records(&data, 300);
 
     int result = 0;  // argument paramers
     opterr = 0;      // hide error message
