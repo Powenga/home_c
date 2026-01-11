@@ -134,16 +134,11 @@ int8_t get_year_max_temp(TemperatureRecord* records, uint16_t size,
 
 uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
                    uint8_t hours, uint8_t minutes, int8_t temperature) {
-    uint8_t valid =
-        validate_record(year, month, day, hours, minutes, temperature);
-    if (!valid) {
-        return 0;
-    }
     // If records is full
     if (data->capacity == data->size) {
         data->capacity = data->capacity * 2;
-        data->records =
-            realloc(data->records, data->capacity * sizeof(TemperatureRecord));
+        data->records = realloc(
+            data->records, (size_t)data->capacity * sizeof(TemperatureRecord));
         // Check memory realloccation
         if (data->records == NULL) {
             data->capacity = data->capacity / 2;
@@ -157,7 +152,7 @@ uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
     data->records[new_elem_index].hours = hours;
     data->records[new_elem_index].minutes = minutes;
     data->records[new_elem_index].temperature = temperature;
-    data->records[new_elem_index].valid = valid;
+    data->records[new_elem_index].valid = 1;
     data->size++;
     return 1;
 }
@@ -168,8 +163,8 @@ int8_t shrink_to_fit(Records* data) {
     }
     if (data->size < data->capacity / 4) {
         uint16_t new_capacity = data->capacity / 2;
-        TemperatureRecord* result =
-            realloc(data->records, new_capacity * sizeof(TemperatureRecord));
+        TemperatureRecord* result = realloc(
+            data->records, (size_t)new_capacity * sizeof(TemperatureRecord));
         if (!result) {
             return 0;
         }
@@ -196,7 +191,7 @@ int8_t remove_record(Records* data, uint16_t index) {
 uint8_t init_temperature_array(Records* data, uint16_t count) {
     data->capacity = count;
     data->size = 0;
-    data->records = malloc(count * sizeof(TemperatureRecord));
+    data->records = malloc((size_t)count * sizeof(TemperatureRecord));
     // Check memory allocation
     if (data->records == NULL) {
         data->capacity = 0;
@@ -218,9 +213,13 @@ uint8_t generate_temperature_records(Records* data, uint16_t size) {
 
     for (uint16_t i = 0; i < size; i++) {
         int8_t temperature = (int8_t)(rand() % 201 - 100);  // [-100; 100]
-        if (!add_record(data, year, month, day, hours, minutes, temperature)) {
-            return 0;
+        if (validate_record(year, month, day, hours, minutes, temperature)) {
+            if (!add_record(data, year, month, day, hours, minutes,
+                            temperature)) {
+                return 0;
+            }
         }
+
         increment_day(&year, &month, &day);
     }
     return 1;
