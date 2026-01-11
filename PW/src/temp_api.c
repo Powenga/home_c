@@ -237,26 +237,3 @@ static void print_record(TemperatureRecord* record,
            record->year, record->month, record->day, record->hours,
            record->minutes, record->temperature);
 };
-
-void print_temperature_records(TemperatureRecord* records, uint16_t size) {
-    sort_temperature_records_by_date(records, size);
-    uint16_t increment_position = 1;
-    for (uint16_t i = 0; i < size; i++) {
-        if (!records[i].valid) {
-            continue;
-        }
-        print_record(&records[i], increment_position++);
-    }
-}
-
-void print_temperature_records_by_month(TemperatureRecord* records,
-                                        uint16_t size, uint8_t month) {
-    sort_temperature_records_by_date(records, size);
-    uint16_t increment_position = 1;
-    for (uint16_t i = 0; i < size; i++) {
-        if (!records[i].valid || records[i].month != month) {
-            continue;
-        }
-        print_record(&records[i], increment_position++);
-    }
-}

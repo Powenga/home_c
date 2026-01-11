@@ -23,8 +23,5 @@ int8_t add_record(TemperatureRecord* records, uint16_t position, uint16_t year,
 int8_t remove_record(TemperatureRecord* records, uint16_t* size,
                      uint16_t index);
 uint16_t generate_temperature_records(Records* data, uint16_t size);
-void print_temperature_records(TemperatureRecord* records, uint16_t size);
-void print_temperature_records_by_month(TemperatureRecord* records,
-                                        uint16_t size, uint8_t month);
 
 #endif

@@ -10,21 +10,29 @@
 
 enum Mode { YEAR, MONTH };
 enum Mode mode = YEAR;
+// Array for monthes for statistics
+uint8_t months[12] = {0};
+uint8_t month_count = 0;
 uint8_t show_help = 0;
 
-uint8_t current_month = 0;
 char* file_path = NULL;
 
+// Main storage
 Records data;
 
-// Statistics
-int8_t min;
-int8_t max;
-int8_t average;
+void print_header() {
+    printf("%-3s | %-5s | %-7s | %-7s | %-7s\n", "№", "Month", "Avg", "Min",
+           "Max");
+}
 
-void print_summary(int8_t* min, int8_t* max, int8_t* average) {
-    printf("===========================================\n");
-    printf("Max: %3dC; Min: %3dC; Average: %3dC.\n", *min, *max, *average);
+void print_month_statistics(uint16_t position, uint8_t month, int8_t* min,
+                            int8_t* max, int8_t* average) {
+    printf("%3d | %5d | %7d | %7d | %7d\n", position, month, min, max, average);
+}
+
+void print_year_statistics(int8_t min, int8_t max, int8_t average) {
+    printf("Year statistics: Min %3dC; Max %3dC; Average %3dC.\n", min, max,
+           average);
 }
 
 void wait_for_key() {
@@ -33,15 +41,6 @@ void wait_for_key() {
 }
 
 int main(int argc, char* argv[]) {
-    srand(time(NULL));
-
-    // Generate random records
-    if (!generate_temperature_records(&data, 350)) {
-        printf("Generate records error.");
-        wait_for_key();
-        return 1;
-    };
-
     int result = 0;  // argument paramers
     opterr = 0;      // hide error message
     while ((result = getopt(argc, argv, "hf:m:")) != -1) {
@@ -63,7 +62,8 @@ int main(int argc, char* argv[]) {
                     return 1;
                 }
                 mode = MONTH;
-                current_month = (uint8_t)value;
+                months[0] = (uint8_t)value;
+                month_count++;
                 break;
             case '?':
                 printf("Unknown argument.\n");
@@ -86,34 +86,33 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Month statistics
-    if (mode == MONTH) {
-        if (!get_month_min_temp(data.records, data.size, current_month, &min) ||
-            !get_month_max_temp(data.records, data.size, current_month, &max) ||
-            !get_month_average_temp(data.records, data.size, current_month,
+    // Read file and store data
+
+    // Statisctcs
+    int8_t min;
+    int8_t max;
+    int8_t average;
+
+    for (size_t i = 0; i < month_count; i++) {
+        // Statistics
+
+        if (!get_month_min_temp(data.records, data.size, months[i], &min) ||
+            !get_month_max_temp(data.records, data.size, months[i], &max) ||
+            !get_month_average_temp(data.records, data.size, months[i],
                                     &average)) {
-            printf("No data relates to the month: %d.\n", current_month);
-            wait_for_key();
-            return 0;
+            continue;
         }
-        print_temperature_records_by_month(data.records, data.size,
-                                           current_month);
-        print_summary(&min, &max, &average);
-        wait_for_key();
-        return 0;
+        print_month_statistics(i + 1, months[i], min, max, average);
     }
 
-    // Year statistics
-    if (!get_year_min_temp(data.records, data.size, &min) ||
-        !get_year_max_temp(data.records, data.size, &max) ||
-        !get_year_average_temp(data.records, data.size, &average)) {
-        printf("No data.\n");
-        wait_for_key();
-        return 0;
+    if (mode == YEAR) {
+        if (!get_year_min_temp(data.records, data.size, &min) ||
+            !get_year_max_temp(data.records, data.size, &max) ||
+            !get_year_average_temp(data.records, data.size, &average)) {
+            printf("No data.\n");
+        }
+        print_year_statistics(min, max, average);
     }
-
-    print_temperature_records(data.records, data.size);
-    print_summary(&min, &max, &average);
 
     wait_for_key();
     return 0;
