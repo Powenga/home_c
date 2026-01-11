@@ -18,7 +18,7 @@ char* file_path;
 
 struct {
     uint16_t size;
-    temperature_record_t records[SIZE];
+    TemperatureRecord records[SIZE];
 } data;
 
 int8_t min;

@@ -1,6 +1,6 @@
 #include "temperature_record.h"
 
-static uint64_t date_to_uint64(temperature_record_t* record) {
+static uint64_t date_to_uint64(TemperatureRecord* record) {
     return (uint64_t)record->year << 32 | (uint64_t)record->month << 24 |
            (uint64_t)record->day << 16 | (uint64_t)record->hours << 8 |
            (uint64_t)record->minutes;
@@ -75,7 +75,7 @@ void increment_day(uint16_t* year, uint8_t* month, uint8_t* day) {
 }
 
 int temp_record_comparator_by_date(const void* a, const void* b) {
-    temperature_record_t* first_ptr = (temperature_record_t*)a;
-    temperature_record_t* second_ptr = (temperature_record_t*)b;
+    TemperatureRecord* first_ptr = (TemperatureRecord*)a;
+    TemperatureRecord* second_ptr = (TemperatureRecord*)b;
     return date_to_uint64(first_ptr) - date_to_uint64(second_ptr);
 }

@@ -2,7 +2,7 @@
 #define TEMPERATURE_RECORD_H
 #include <stdint.h>
 
-struct temperature_record {
+struct TemperatureRecord {
     uint16_t year;
     uint8_t month;
     uint8_t day;
@@ -12,6 +12,6 @@ struct temperature_record {
     uint8_t valid;
 };
 
-typedef struct temperature_record temperature_record_t;
+typedef struct TemperatureRecord TemperatureRecord;
 
 #endif

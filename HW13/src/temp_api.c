@@ -4,7 +4,7 @@
 #include "temperature_record.h"
 #include "utils.h"
 
-int8_t get_month_average_temp(temperature_record_t* records, uint16_t size,
+int8_t get_month_average_temp(TemperatureRecord* records, uint16_t size,
                               uint8_t month, int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists
     int16_t month_sum = 0;
@@ -26,7 +26,7 @@ int8_t get_month_average_temp(temperature_record_t* records, uint16_t size,
     return result;
 }
 
-int8_t get_month_min_temp(temperature_record_t* records, uint16_t size,
+int8_t get_month_min_temp(TemperatureRecord* records, uint16_t size,
                           uint8_t month, int8_t* p_min_temp) {
     int8_t result = 0;  // true if valid data exists in month
     // Find first
@@ -48,7 +48,7 @@ int8_t get_month_min_temp(temperature_record_t* records, uint16_t size,
     return result;
 };
 
-int8_t get_month_max_temp(temperature_record_t* records, uint16_t size,
+int8_t get_month_max_temp(TemperatureRecord* records, uint16_t size,
                           uint8_t month, int8_t* p_max_temp) {
     int8_t result = 0;  // true if valid data exists in month
     // Find first
@@ -70,7 +70,7 @@ int8_t get_month_max_temp(temperature_record_t* records, uint16_t size,
     return result;
 };
 
-int8_t get_year_average_temp(temperature_record_t* records, uint16_t size,
+int8_t get_year_average_temp(TemperatureRecord* records, uint16_t size,
                              int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists in year
     int16_t sum = 0;
@@ -90,7 +90,7 @@ int8_t get_year_average_temp(temperature_record_t* records, uint16_t size,
     return result;
 };
 
-int8_t get_year_min_temp(temperature_record_t* records, uint16_t size,
+int8_t get_year_min_temp(TemperatureRecord* records, uint16_t size,
                          int8_t* p_min_temp) {
     int8_t result = 0;  // true if valid data exists in year
     for (size_t i = 0; i < size; i++) {
@@ -111,7 +111,7 @@ int8_t get_year_min_temp(temperature_record_t* records, uint16_t size,
     return result;
 };
 
-int8_t get_year_max_temp(temperature_record_t* records, uint16_t size,
+int8_t get_year_max_temp(TemperatureRecord* records, uint16_t size,
                          int8_t* p_max_temp) {
     int8_t result = 0;  // true if valid data exists in year
     for (size_t i = 0; i < size; i++) {
@@ -132,9 +132,9 @@ int8_t get_year_max_temp(temperature_record_t* records, uint16_t size,
     return result;
 };
 
-uint8_t add_record(temperature_record_t* records, uint16_t position,
-                   uint16_t year, uint8_t month, uint8_t day, uint8_t hours,
-                   uint8_t minutes, int8_t temperature) {
+uint8_t add_record(TemperatureRecord* records, uint16_t position, uint16_t year,
+                   uint8_t month, uint8_t day, uint8_t hours, uint8_t minutes,
+                   int8_t temperature) {
     uint8_t valid =
         validate_record(year, month, day, hours, minutes, temperature);
     if (!valid) {
@@ -150,7 +150,7 @@ uint8_t add_record(temperature_record_t* records, uint16_t position,
     return 1;
 }
 
-int8_t remove_record(temperature_record_t* records, uint16_t* size,
+int8_t remove_record(TemperatureRecord* records, uint16_t* size,
                      uint16_t index) {
     if (index >= *size) {
         return 0;
@@ -163,8 +163,7 @@ int8_t remove_record(temperature_record_t* records, uint16_t* size,
     return 1;
 }
 
-uint16_t create_temperature_records(temperature_record_t* records,
-                                    uint16_t size) {
+uint16_t create_temperature_records(TemperatureRecord* records, uint16_t size) {
     uint16_t year = 1970;
     uint8_t month = 1;
     uint8_t day = 1;
@@ -178,20 +177,20 @@ uint16_t create_temperature_records(temperature_record_t* records,
     return size;
 }
 
-static void sort_temperature_records_by_date(temperature_record_t* records,
+static void sort_temperature_records_by_date(TemperatureRecord* records,
                                              uint16_t size) {
-    qsort(records, size, sizeof(temperature_record_t),
+    qsort(records, size, sizeof(TemperatureRecord),
           temp_record_comparator_by_date);
 }
 
-static void print_record(temperature_record_t* record,
+static void print_record(TemperatureRecord* record,
                          uint16_t increment_position) {
     printf("%03d. %04d-%02d-%02dT%02d:%02d t=%3d\n", increment_position,
            record->year, record->month, record->day, record->hours,
            record->minutes, record->temperature);
 };
 
-void print_temperature_records(temperature_record_t* records, uint16_t size) {
+void print_temperature_records(TemperatureRecord* records, uint16_t size) {
     sort_temperature_records_by_date(records, size);
     uint16_t increment_position = 1;
     for (uint16_t i = 0; i < size; i++) {
@@ -202,7 +201,7 @@ void print_temperature_records(temperature_record_t* records, uint16_t size) {
     }
 }
 
-void print_temperature_records_by_month(temperature_record_t* records,
+void print_temperature_records_by_month(TemperatureRecord* records,
                                         uint16_t size, uint8_t month) {
     sort_temperature_records_by_date(records, size);
     uint16_t increment_position = 1;
