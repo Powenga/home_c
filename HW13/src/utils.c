@@ -75,7 +75,15 @@ void increment_day(uint16_t* year, uint8_t* month, uint8_t* day) {
 }
 
 int temp_record_comparator_by_date(const void* a, const void* b) {
-    TemperatureRecord* first_ptr = (TemperatureRecord*)a;
-    TemperatureRecord* second_ptr = (TemperatureRecord*)b;
-    return date_to_uint64(first_ptr) - date_to_uint64(second_ptr);
+    TemperatureRecord* a_ptr = (TemperatureRecord*)a;
+    TemperatureRecord* b_ptr = (TemperatureRecord*)b;
+    uint64_t int_date_a = date_to_uint64(a_ptr);
+    uint64_t int_date_b = date_to_uint64(b_ptr);
+    if (int_date_a < int_date_b) {
+        return -1;
+    }
+    if (int_date_a > int_date_b) {
+        return -1;
+    }
+    return 0;
 }
