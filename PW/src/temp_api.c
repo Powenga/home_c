@@ -7,8 +7,8 @@
 int8_t get_month_average_temp(TemperatureRecord* records, capacity size,
                               uint8_t month, int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists
-    int32_t month_sum = 0;
-    int32_t month_count = 0;
+    int64_t month_sum = 0;
+    int64_t month_count = 0;
     for (capacity i = 0; i < size; i++) {
         if (!records[i].valid) {
             continue;
@@ -21,7 +21,7 @@ int8_t get_month_average_temp(TemperatureRecord* records, capacity size,
         }
     }
     if (result) {
-        *p_average_temp = month_sum / month_count;
+        *p_average_temp = (int8_t)(month_sum / month_count);
     }
     return result;
 }
@@ -73,8 +73,8 @@ int8_t get_month_max_temp(TemperatureRecord* records, capacity size,
 int8_t get_year_average_temp(TemperatureRecord* records, capacity size,
                              int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists in year
-    int32_t sum = 0;
-    int32_t count = 0;
+    int64_t sum = 0;
+    int64_t count = 0;
     for (capacity i = 0; i < size; i++) {
         if (!records[i].valid) {
             continue;
@@ -85,7 +85,7 @@ int8_t get_year_average_temp(TemperatureRecord* records, capacity size,
         result = 1;
     }
     if (result) {
-        *p_average_temp = sum / count;
+        *p_average_temp = (int8_t)(sum / count);
     }
     return result;
 };
@@ -162,7 +162,7 @@ int8_t shrink_to_fit(Records* data) {
         return 0;
     }
     if (data->size < data->capacity / 4) {
-        uint16_t new_capacity = data->capacity / 2;
+        capacity new_capacity = data->capacity / 2;
         TemperatureRecord* result = realloc(
             data->records, (size_t)new_capacity * sizeof(TemperatureRecord));
         if (!result) {
