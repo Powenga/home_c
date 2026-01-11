@@ -6,16 +6,18 @@
 
 #include "temp_api.h"
 #include "temperature_record.h"
+#include "utils.h"
 
 enum Mode { YEAR, MONTH };
 enum Mode mode = YEAR;
 uint8_t show_help = 0;
 
 uint8_t current_month = 0;
-char* file_path;
+char* file_path = NULL;
 
 Records data;
 
+// Statistics
 int8_t min;
 int8_t max;
 int8_t average;
@@ -74,18 +76,14 @@ int main(int argc, char* argv[]) {
 
     // Help message
     if (show_help) {
-        printf("Shows temperature statistics by year or month.\n");
-        printf("Usage: %s -f path/to/file.csv -m 11.\n", argv[0]);
-        printf("\t-h - Help text;  \n");
-        printf(
-            "\t-f path/to/file.csv - Specify file with temperature "
-            "data;"
-            "\n");
-        printf(
-            "\t-m month_number - Specify month number to show month statistics"
-            "\n");
+        print_help(argv[0]);
         wait_for_key();
         return 0;
+    }
+
+    if (!file_path) {
+        printf("Please, provide path to file.\n");
+        return 1;
     }
 
     // Month statistics

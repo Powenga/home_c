@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "temperature_record.h"
 
 static uint64_t date_to_uint64(TemperatureRecord* record) {
@@ -86,4 +88,17 @@ int temp_record_comparator_by_date(const void* a, const void* b) {
         return -1;
     }
     return 0;
+}
+
+void print_help(char* path_to_exe) {
+    printf("Shows temperature statistics by year or month.\n");
+    printf("Usage: %s -f path/to/ file.csv -m 11.\n", path_to_exe);
+    printf("\t-h - Help text;  \n");
+    printf(
+        "\t-f path/to/file.csv - Specify file with temperature "
+        "data;"
+        "\n");
+    printf(
+        "\t-m month_number - Specify month number to show month statistics"
+        "\n");
 }

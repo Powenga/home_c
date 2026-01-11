@@ -11,5 +11,6 @@ uint8_t validate_record(uint16_t year, uint8_t month, uint8_t day,
 void increment_minute(uint16_t* year, uint8_t* month, uint8_t* day,
                       uint8_t* hours, uint8_t* minutes);
 void increment_day(uint16_t* year, uint8_t* month, uint8_t* day);
+void print_help(char* path_to_exe);
 
 #endif
