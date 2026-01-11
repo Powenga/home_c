@@ -136,7 +136,7 @@ int main(int argc, char* argv[]) {
 
     // Fill months if year mode
     if (mode == YEAR) {
-        for (uint16_t i = 0; i < data.size; i++) {
+        for (capacity i = 0; i < data.size; i++) {
             uint8_t month_index = data.records[i].month - 1;
             if (!months[month_index]) {
                 months[month_index] = 1;

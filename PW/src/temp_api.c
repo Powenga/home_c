@@ -4,12 +4,12 @@
 #include "temperature_record.h"
 #include "utils.h"
 
-int8_t get_month_average_temp(TemperatureRecord* records, uint16_t size,
+int8_t get_month_average_temp(TemperatureRecord* records, capacity size,
                               uint8_t month, int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists
-    int16_t month_sum = 0;
-    uint8_t month_count = 0;
-    for (uint16_t i = 0; i < size; i++) {
+    int32_t month_sum = 0;
+    int32_t month_count = 0;
+    for (capacity i = 0; i < size; i++) {
         if (!records[i].valid) {
             continue;
         }
@@ -26,11 +26,11 @@ int8_t get_month_average_temp(TemperatureRecord* records, uint16_t size,
     return result;
 }
 
-int8_t get_month_min_temp(TemperatureRecord* records, uint16_t size,
+int8_t get_month_min_temp(TemperatureRecord* records, capacity size,
                           uint8_t month, int8_t* p_min_temp) {
     int8_t result = 0;  // true if valid data exists in month
     // Find first
-    for (uint16_t i = 0; i < size; i++) {
+    for (capacity i = 0; i < size; i++) {
         // Skip not valid data or other month
         if (!records[i].valid || records[i].month != month) {
             continue;
@@ -48,11 +48,11 @@ int8_t get_month_min_temp(TemperatureRecord* records, uint16_t size,
     return result;
 };
 
-int8_t get_month_max_temp(TemperatureRecord* records, uint16_t size,
+int8_t get_month_max_temp(TemperatureRecord* records, capacity size,
                           uint8_t month, int8_t* p_max_temp) {
     int8_t result = 0;  // true if valid data exists in month
     // Find first
-    for (uint16_t i = 0; i < size; i++) {
+    for (capacity i = 0; i < size; i++) {
         // Skip not valid data or other month
         if (!records[i].valid || records[i].month != month) {
             continue;
@@ -70,12 +70,12 @@ int8_t get_month_max_temp(TemperatureRecord* records, uint16_t size,
     return result;
 };
 
-int8_t get_year_average_temp(TemperatureRecord* records, uint16_t size,
+int8_t get_year_average_temp(TemperatureRecord* records, capacity size,
                              int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists in year
-    int16_t sum = 0;
-    uint8_t count = 0;
-    for (size_t i = 0; i < size; i++) {
+    int32_t sum = 0;
+    int32_t count = 0;
+    for (capacity i = 0; i < size; i++) {
         if (!records[i].valid) {
             continue;
         }
@@ -90,10 +90,10 @@ int8_t get_year_average_temp(TemperatureRecord* records, uint16_t size,
     return result;
 };
 
-int8_t get_year_min_temp(TemperatureRecord* records, uint16_t size,
+int8_t get_year_min_temp(TemperatureRecord* records, capacity size,
                          int8_t* p_min_temp) {
     int8_t result = 0;  // true if valid data exists in year
-    for (size_t i = 0; i < size; i++) {
+    for (capacity i = 0; i < size; i++) {
         // Skip not valid data
         if (!records[i].valid) {
             continue;
@@ -111,10 +111,10 @@ int8_t get_year_min_temp(TemperatureRecord* records, uint16_t size,
     return result;
 };
 
-int8_t get_year_max_temp(TemperatureRecord* records, uint16_t size,
+int8_t get_year_max_temp(TemperatureRecord* records, capacity size,
                          int8_t* p_max_temp) {
     int8_t result = 0;  // true if valid data exists in year
-    for (size_t i = 0; i < size; i++) {
+    for (capacity i = 0; i < size; i++) {
         // Skip not valid data
         if (!records[i].valid) {
             continue;
@@ -145,7 +145,7 @@ uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
             return 0;
         }
     }
-    uint16_t new_elem_index = data->size;
+    capacity new_elem_index = data->size;
     data->records[new_elem_index].year = year;
     data->records[new_elem_index].month = month;
     data->records[new_elem_index].day = day;
