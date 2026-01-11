@@ -162,16 +162,15 @@ uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
     return 1;
 }
 
-int8_t remove_record(TemperatureRecord* records, uint16_t* size,
-                     uint16_t index) {
-    if (index >= *size) {
+int8_t remove_record(Records* data, uint16_t index) {
+    if (index >= data->size) {
         return 0;
     }
 
-    for (uint16_t i = index; i < *size - 1; i++) {
-        records[i] = records[i + 1];
+    for (uint16_t i = index; i < data->size - 1; i++) {
+        data->records[i] = data->records[i + 1];
     }
-    (*size)--;
+    (data->size)--;
     return 1;
 }
 
