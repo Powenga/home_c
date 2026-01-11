@@ -8,6 +8,10 @@
 #include "temperature_record.h"
 #include "utils.h"
 
+#define LINE_BUF_SIZE 256
+#define DATA_SIZE 256
+#define ROW_DATA_COUNT 6
+
 enum Mode { YEAR, MONTH };
 enum Mode mode = YEAR;
 // Array for monthes for statistics
@@ -21,12 +25,12 @@ char* file_path = NULL;
 Records data;
 
 void print_header() {
-    printf("%-3s | %-5s | %-7s | %-7s | %-7s\n", "№", "Month", "Avg", "Min",
+    printf("%-3s | %-5s | %-7s | %-7s | %-7s\n", "#", "Month", "Avg", "Min",
            "Max");
 }
 
-void print_month_statistics(uint16_t position, uint8_t month, int8_t* min,
-                            int8_t* max, int8_t* average) {
+void print_month_statistics(uint16_t position, uint8_t month, int8_t min,
+                            int8_t max, int8_t average) {
     printf("%3d | %5d | %7d | %7d | %7d\n", position, month, min, max, average);
 }
 
@@ -86,13 +90,52 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    // Init main storage
+    init_temperature_array(&data, DATA_SIZE);
+
     // Read file and store data
+    FILE* file;
+    file = fopen(file_path, "r");
+
+    if (!file) {
+        printf("Cant open file %s.", file_path);
+        wait_for_key();
+        return 1;
+    }
+
+    int year, month, day, hours, minutes, temperature;
+    char line[LINE_BUF_SIZE];
+    uint16_t line_number = 0;
+
+    while (fgets(line, sizeof(line), file) != NULL) {
+        line_number++;
+        int row_data_count = sscanf(line, "%d;%d;%d;%d;%d;%d", &year, &month,
+                                    &day, &hours, &minutes, &temperature);
+
+        if (row_data_count != ROW_DATA_COUNT) {
+            printf("Wrong format in line %d: %s", line_number, line);
+            continue;
+        }
+
+        if (!validate_record(year, month, day, hours, minutes, temperature)) {
+            printf("Invalid data in line %d: %s\n", line_number, line);
+            continue;
+        }
+
+        // Add new record
+        add_record(&data, (uint16_t)year, (uint8_t)month, (uint8_t)day,
+                   (uint8_t)hours, (uint8_t)minutes, (uint8_t)temperature);
+    }
+    // Sort records by date
+    sort_temperature_records_by_date(data.records, data.size);
 
     // Statisctcs
     int8_t min;
     int8_t max;
     int8_t average;
 
+    printf("\n");
+    print_header();
     for (size_t i = 0; i < month_count; i++) {
         // Statistics
 
@@ -110,6 +153,8 @@ int main(int argc, char* argv[]) {
             !get_year_max_temp(data.records, data.size, &max) ||
             !get_year_average_temp(data.records, data.size, &average)) {
             printf("No data.\n");
+            wait_for_key();
+            return 0;
         }
         print_year_statistics(min, max, average);
     }
