@@ -22,7 +22,5 @@ uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
 int8_t remove_record(TemperatureRecord* records, uint16_t* size,
                      uint16_t index);
 uint8_t init_temperature_array(Records* data, uint16_t count);
-void sort_temperature_records_by_date(TemperatureRecord* records,
-                                      uint16_t size);
 
 #endif

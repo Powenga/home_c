@@ -11,12 +11,12 @@
 #define LINE_BUF_SIZE 256
 #define DATA_SIZE 256
 #define ROW_DATA_COUNT 6
+#define MONTHS_COUNT 12
 
 enum Mode { YEAR, MONTH };
 enum Mode mode = YEAR;
 // Array for monthes for statistics
-uint8_t months[12] = {0};
-uint8_t month_count = 0;
+uint8_t months[MONTHS_COUNT] = {0};
 uint8_t show_help = 0;
 
 char* file_path = NULL;
@@ -25,8 +25,8 @@ char* file_path = NULL;
 Records data;
 
 void print_header() {
-    printf("%-3s | %-5s | %-7s | %-7s | %-7s\n", "#", "Month", "Avg", "Min",
-           "Max");
+    printf("%-3s | %-5s | %-7s | %-7s | %-7s\n", "#", "Month", "Min", "Max",
+           "Avg");
 }
 
 void print_month_statistics(uint16_t position, uint8_t month, int8_t min,
@@ -66,8 +66,7 @@ int main(int argc, char* argv[]) {
                     return 1;
                 }
                 mode = MONTH;
-                months[0] = (uint8_t)value;
-                month_count++;
+                months[(uint8_t)value - 1] = 1;
                 break;
             case '?':
                 printf("Unknown argument.\n");
@@ -126,26 +125,40 @@ int main(int argc, char* argv[]) {
         add_record(&data, (uint16_t)year, (uint8_t)month, (uint8_t)day,
                    (uint8_t)hours, (uint8_t)minutes, (uint8_t)temperature);
     }
-    // Sort records by date
-    sort_temperature_records_by_date(data.records, data.size);
+
+    // close file
+    fclose(file);
 
     // Statisctcs
     int8_t min;
     int8_t max;
     int8_t average;
 
+    // Fill months if year mode
+    if (mode == YEAR) {
+        for (uint16_t i = 0; i < data.size; i++) {
+            uint8_t month_index = data.records[i].month - 1;
+            if (!months[month_index]) {
+                months[month_index] = 1;
+            }
+        }
+    }
+
+    // Statistics
     printf("\n");
     print_header();
-    for (size_t i = 0; i < month_count; i++) {
-        // Statistics
 
-        if (!get_month_min_temp(data.records, data.size, months[i], &min) ||
-            !get_month_max_temp(data.records, data.size, months[i], &max) ||
-            !get_month_average_temp(data.records, data.size, months[i],
-                                    &average)) {
+    for (size_t i = 0, position = 1; i < MONTHS_COUNT; i++) {
+        if (!months[i]) {
             continue;
         }
-        print_month_statistics(i + 1, months[i], min, max, average);
+        if (!get_month_min_temp(data.records, data.size, i + 1, &min) ||
+            !get_month_max_temp(data.records, data.size, i + 1, &max) ||
+            !get_month_average_temp(data.records, data.size, i + 1, &average)) {
+            continue;
+        }
+        print_month_statistics(position, i + 1, min, max, average);
+        position++;
     }
 
     if (mode == YEAR) {

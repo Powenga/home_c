@@ -199,9 +199,3 @@ uint8_t init_temperature_array(Records* data, uint16_t count) {
     }
     return 1;
 }
-
-void sort_temperature_records_by_date(TemperatureRecord* records,
-                                      uint16_t size) {
-    qsort(records, size, sizeof(TemperatureRecord),
-          temp_record_comparator_by_date);
-}
