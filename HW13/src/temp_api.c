@@ -162,6 +162,24 @@ uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
     return 1;
 }
 
+int8_t shrink_to_fit(Records* data) {
+    if (!data || !data->records || data->size == 0) {
+        return 0;
+    }
+    if (data->size < data->capacity / 4) {
+        uint16_t new_capacity = data->capacity / 2;
+        TemperatureRecord* result =
+            realloc(data->records, new_capacity * sizeof(TemperatureRecord));
+        if (!result) {
+            return 0;
+        }
+        data->capacity = new_capacity;
+        data->records = result;
+        return 1;
+    }
+    return 0;
+}
+
 int8_t remove_record(Records* data, uint16_t index) {
     if (index >= data->size) {
         return 0;
@@ -171,6 +189,7 @@ int8_t remove_record(Records* data, uint16_t index) {
         data->records[i] = data->records[i + 1];
     }
     (data->size)--;
+    shrink_to_fit(data);
     return 1;
 }
 
