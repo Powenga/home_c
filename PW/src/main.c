@@ -7,7 +7,7 @@
 
 #include "cli.h"
 #include "file_reader.h"
-#include "temp_api.h"
+#include "temp_functions.h"
 #include "temperature_record.h"
 #include "utils.h"
 
@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
     CliOptions options;
     if (!parse_cli(argc, argv, &options)) {
         print_cli_usage(argv[0]);
+        return 0;
     }
 
     // Help message

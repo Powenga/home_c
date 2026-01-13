@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "temp_api.h"
+#include "temp_functions.h"
 #include "temperature_record.h"
 #include "utils.h"
 

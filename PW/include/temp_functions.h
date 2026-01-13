@@ -1,5 +1,5 @@
-#ifndef TEMP_API_H
-#define TEMP_API_H
+#ifndef TEMP_FUNCTIONS_H
+#define TEMP_FUNCTIONS_H
 
 #include <stdio.h>
 
