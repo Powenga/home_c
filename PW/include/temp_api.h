@@ -5,21 +5,35 @@
 
 #include "temperature_record.h"
 
-int8_t get_month_average_temp(TemperatureRecord* records, capacity size,
-                              uint8_t month, int8_t* p_average_temp);
-int8_t get_month_min_temp(TemperatureRecord* records, capacity size,
-                          uint8_t month, int8_t* p_min_temp);
-int8_t get_month_max_temp(TemperatureRecord* records, capacity size,
-                          uint8_t month, int8_t* p_max_temp);
-int8_t get_year_average_temp(TemperatureRecord* records, capacity size,
-                             int8_t* p_average_temp);
-int8_t get_year_min_temp(TemperatureRecord* records, capacity size,
-                         int8_t* p_min_temp);
-int8_t get_year_max_temp(TemperatureRecord* records, capacity size,
-                         int8_t* p_max_temp);
+#define MONTHS_IN_YEAR 12
+#define MAX_YEARS 10
+
+typedef struct {
+    int8_t min;
+    int8_t max;
+    int64_t sum;
+    int64_t count;
+    int8_t initialized;
+} Stats;
+
+typedef struct {
+    uint16_t year;
+    Stats year_stats;
+    Stats months[MONTHS_IN_YEAR];
+} YearStats;
+
+typedef struct {
+    YearStats years[MAX_YEARS];
+    uint8_t year_count;
+} FullStatistics;
+
+uint8_t init_temperature_array(Records* data, uint16_t count);
 uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
                    uint8_t hours, uint8_t minutes, int8_t temperature);
-int8_t remove_record(Records* data, uint16_t index);
-uint8_t init_temperature_array(Records* data, uint16_t count);
+
+void init_full_statistics(FullStatistics* full_stats);
+int calculate_temperature_statistics(Records* data, FullStatistics* full_stats);
+void stats_print_all(FullStatistics* stats);
+void stats_print_month(FullStatistics* stats, uint8_t month);
 
 #endif

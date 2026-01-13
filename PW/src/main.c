@@ -13,34 +13,6 @@
 
 #define DATA_SIZE 256
 
-#define MONTHS_COUNT 12
-
-// Array for monthes for statistics
-uint8_t months[MONTHS_COUNT] = {0};
-
-// Main storage
-Records data;
-
-void print_header() {
-    printf("%-3s | %-5s | %-7s | %-7s | %-7s\n", "#", "Month", "Min", "Max",
-           "Avg");
-}
-
-void print_month_statistics(uint16_t position, uint8_t month, int8_t min,
-                            int8_t max, int8_t average) {
-    printf("%3d | %5d | %7d | %7d | %7d\n", position, month, min, max, average);
-}
-
-void print_year_statistics(int8_t min, int8_t max, int8_t average) {
-    printf("Year statistics: Min %3dC; Max %3dC; Average %3dC.\n", min, max,
-           average);
-}
-
-void wait_for_key() {
-    printf("\nPress any key to quit...\n");
-    _getch();
-}
-
 int main(int argc, char* argv[]) {
     CliOptions options;
     if (!cli_parse(argc, argv, &options)) {
@@ -58,10 +30,11 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Init main storage
+    // Init records store
+    Records data;
     init_temperature_array(&data, DATA_SIZE);
 
-    // Read file and store data
+    // Read file and put record
     FILE* file;
     file = fopen(options.input_file, "r");
 
@@ -74,48 +47,16 @@ int main(int argc, char* argv[]) {
     load_records_from_csv(file, &data);
 
     // Statisctcs
-    int8_t min;
-    int8_t max;
-    int8_t average;
+    FullStatistics full_statistics;
+    init_full_statistics(&full_statistics);
 
-    // Fill months if year mode
-    if (options.month == -1) {
-        for (capacity i = 0; i < data.size; i++) {
-            uint8_t month_index = data.records[i].month - 1;
-            if (!months[month_index]) {
-                months[month_index] = 1;
-            }
-        }
-    }
-
-    // Statistics
-    printf("\n");
-    print_header();
-
-    for (size_t i = 0, position = 1; i < MONTHS_COUNT; i++) {
-        if (!months[i]) {
-            continue;
-        }
-        if (!get_month_min_temp(data.records, data.size, i + 1, &min) ||
-            !get_month_max_temp(data.records, data.size, i + 1, &max) ||
-            !get_month_average_temp(data.records, data.size, i + 1, &average)) {
-            continue;
-        }
-        print_month_statistics(position, i + 1, min, max, average);
-        position++;
-    }
+    calculate_temperature_statistics(&data, &full_statistics);
 
     if (options.month == -1) {
-        if (!get_year_min_temp(data.records, data.size, &min) ||
-            !get_year_max_temp(data.records, data.size, &max) ||
-            !get_year_average_temp(data.records, data.size, &average)) {
-            printf("No data.\n");
-            wait_for_key();
-            return 0;
-        }
-        print_year_statistics(min, max, average);
+        stats_print_all(&full_statistics);
+    } else {
+        stats_print_month(&full_statistics, options.month);
     }
 
-    wait_for_key();
     return 0;
 }
