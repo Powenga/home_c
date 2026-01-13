@@ -90,9 +90,9 @@ int temp_record_comparator_by_date(const void* a, const void* b) {
     return 0;
 }
 
-void print_help(char* path_to_exe) {
+void print_help(char* prog) {
     printf("Shows temperature statistics by year or month.\n");
-    printf("Usage: %s -f path/to/ file.csv -m 11.\n", path_to_exe);
+    printf("Usage: %s -f path/to/ file.csv -m 11.\n", prog);
     printf("\t-h - Help text;  \n");
     printf(
         "\t-f path/to/file.csv - Specify file with temperature "
