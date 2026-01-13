@@ -15,8 +15,8 @@
 
 int main(int argc, char* argv[]) {
     CliOptions options;
-    if (!cli_parse(argc, argv, &options)) {
-        cli_print_usage(argv[0]);
+    if (!parse_cli(argc, argv, &options)) {
+        print_cli_usage(argv[0]);
     }
 
     // Help message
@@ -53,9 +53,9 @@ int main(int argc, char* argv[]) {
     calculate_temperature_statistics(&data, &full_statistics);
 
     if (options.month == -1) {
-        stats_print_all(&full_statistics);
+        print_all_stats(&full_statistics);
     } else {
-        stats_print_month(&full_statistics, options.month);
+        print_month_stats(&full_statistics, options.month);
     }
 
     return 0;

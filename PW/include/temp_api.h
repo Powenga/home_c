@@ -33,7 +33,7 @@ uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
 
 void init_full_statistics(FullStatistics* full_stats);
 int calculate_temperature_statistics(Records* data, FullStatistics* full_stats);
-void stats_print_all(FullStatistics* stats);
-void stats_print_month(FullStatistics* stats, uint8_t month);
+void print_all_stats(FullStatistics* stats);
+void print_month_stats(FullStatistics* stats, uint8_t month);
 
 #endif

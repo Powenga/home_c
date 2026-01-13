@@ -5,7 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
-int cli_parse(int argc, char* argv[], CliOptions* options) {
+int parse_cli(int argc, char* argv[], CliOptions* options) {
     // Init options
     options->input_file = NULL;
     options->month = -1;
@@ -41,6 +41,6 @@ int cli_parse(int argc, char* argv[], CliOptions* options) {
     return 1;
 }
 
-void cli_print_usage(const char* prog) {
+void print_cli_usage(const char* prog) {
     printf("Usage: %s -f <input_file> [-m <month 1..12>]\n", prog);
 }

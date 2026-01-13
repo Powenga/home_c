@@ -140,7 +140,7 @@ static void print_year_statistics(int8_t min, int8_t max, int8_t average) {
            average);
 }
 
-void stats_print_all(FullStatistics* stats) {
+void print_all_stats(FullStatistics* stats) {
     for (uint8_t y = 0; y < stats->year_count; ++y) {
         YearStats* year = &stats->years[y];
         print_header();
@@ -160,7 +160,7 @@ void stats_print_all(FullStatistics* stats) {
     }
 }
 
-void stats_print_month(FullStatistics* stats, uint8_t month) {
+void print_month_stats(FullStatistics* stats, uint8_t month) {
     if (month < 1 || month > 12) {
         return;
     }

@@ -11,7 +11,7 @@ typedef struct {
     uint8_t show_help;
 } CliOptions;
 
-int cli_parse(int argc, char* argv[], CliOptions* options);
-void cli_print_usage(const char* prog);
+int parse_cli(int argc, char* argv[], CliOptions* options);
+void print_cli_usage(const char* prog);
 
 #endif
