@@ -4,6 +4,74 @@
 #include "temperature_record.h"
 #include "utils.h"
 
+uint8_t init_temperature_array(Records* data, uint16_t count) {
+    data->capacity = count;
+    data->size = 0;
+    data->records = malloc((size_t)count * sizeof(TemperatureRecord));
+    // Check memory allocation
+    if (data->records == NULL) {
+        data->capacity = 0;
+        return 0;
+    }
+    return 1;
+}
+
+uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
+                   uint8_t hours, uint8_t minutes, int8_t temperature) {
+    // If records is full
+    if (data->capacity == data->size) {
+        data->capacity = data->capacity * 2;
+        data->records = realloc(
+            data->records, (size_t)data->capacity * sizeof(TemperatureRecord));
+        // Check memory realloccation
+        if (data->records == NULL) {
+            data->capacity = data->capacity / 2;
+            return 0;
+        }
+    }
+    capacity new_elem_index = data->size;
+    data->records[new_elem_index].year = year;
+    data->records[new_elem_index].month = month;
+    data->records[new_elem_index].day = day;
+    data->records[new_elem_index].hours = hours;
+    data->records[new_elem_index].minutes = minutes;
+    data->records[new_elem_index].temperature = temperature;
+    data->records[new_elem_index].valid = 1;
+    data->size++;
+    return 1;
+}
+
+int8_t shrink_to_fit(Records* data) {
+    if (!data || !data->records || data->size == 0) {
+        return 0;
+    }
+    if (data->size < data->capacity / 4) {
+        capacity new_capacity = data->capacity / 2;
+        TemperatureRecord* result = realloc(
+            data->records, (size_t)new_capacity * sizeof(TemperatureRecord));
+        if (!result) {
+            return 0;
+        }
+        data->capacity = new_capacity;
+        data->records = result;
+        return 1;
+    }
+    return 0;
+}
+
+int8_t remove_record(Records* data, uint16_t index) {
+    if (index >= data->size) {
+        return 0;
+    }
+
+    for (uint16_t i = index; i < data->size - 1; i++) {
+        data->records[i] = data->records[i + 1];
+    }
+    (data->size)--;
+    shrink_to_fit(data);
+    return 1;
+}
+
 int8_t get_month_average_temp(TemperatureRecord* records, capacity size,
                               uint8_t month, int8_t* p_average_temp) {
     int8_t result = 0;  // true if valid data exists
@@ -131,71 +199,3 @@ int8_t get_year_max_temp(TemperatureRecord* records, capacity size,
 
     return result;
 };
-
-uint8_t add_record(Records* data, uint16_t year, uint8_t month, uint8_t day,
-                   uint8_t hours, uint8_t minutes, int8_t temperature) {
-    // If records is full
-    if (data->capacity == data->size) {
-        data->capacity = data->capacity * 2;
-        data->records = realloc(
-            data->records, (size_t)data->capacity * sizeof(TemperatureRecord));
-        // Check memory realloccation
-        if (data->records == NULL) {
-            data->capacity = data->capacity / 2;
-            return 0;
-        }
-    }
-    capacity new_elem_index = data->size;
-    data->records[new_elem_index].year = year;
-    data->records[new_elem_index].month = month;
-    data->records[new_elem_index].day = day;
-    data->records[new_elem_index].hours = hours;
-    data->records[new_elem_index].minutes = minutes;
-    data->records[new_elem_index].temperature = temperature;
-    data->records[new_elem_index].valid = 1;
-    data->size++;
-    return 1;
-}
-
-int8_t shrink_to_fit(Records* data) {
-    if (!data || !data->records || data->size == 0) {
-        return 0;
-    }
-    if (data->size < data->capacity / 4) {
-        capacity new_capacity = data->capacity / 2;
-        TemperatureRecord* result = realloc(
-            data->records, (size_t)new_capacity * sizeof(TemperatureRecord));
-        if (!result) {
-            return 0;
-        }
-        data->capacity = new_capacity;
-        data->records = result;
-        return 1;
-    }
-    return 0;
-}
-
-int8_t remove_record(Records* data, uint16_t index) {
-    if (index >= data->size) {
-        return 0;
-    }
-
-    for (uint16_t i = index; i < data->size - 1; i++) {
-        data->records[i] = data->records[i + 1];
-    }
-    (data->size)--;
-    shrink_to_fit(data);
-    return 1;
-}
-
-uint8_t init_temperature_array(Records* data, uint16_t count) {
-    data->capacity = count;
-    data->size = 0;
-    data->records = malloc((size_t)count * sizeof(TemperatureRecord));
-    // Check memory allocation
-    if (data->records == NULL) {
-        data->capacity = 0;
-        return 0;
-    }
-    return 1;
-}
