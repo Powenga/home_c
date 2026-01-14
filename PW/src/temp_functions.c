@@ -156,6 +156,7 @@ void print_all_stats(FullStatistics* stats) {
         }
         Stats* year_stats = &year->year_stats;
         int8_t average = get_tempstats_average(year_stats);
+        printf("--------------------------------------------------\n");
         print_year_statistics(year_stats->min, year_stats->max, average);
     }
 }

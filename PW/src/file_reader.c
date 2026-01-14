@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "temp_functions.h"
 #include "temperature_record.h"
@@ -16,6 +17,9 @@ void load_records_from_csv(FILE* input_file, Records* ptr_data) {
         line_number++;
         int row_data_count = sscanf(line, "%d;%d;%d;%d;%d;%d", &year, &month,
                                     &day, &hours, &minutes, &temperature);
+
+        // Remove \n from string
+        line[strcspn(line, "\r\n")] = '\0';
 
         if (row_data_count != ROW_DATA_COUNT) {
             printf("Wrong format in line %d: %s\n", line_number, line);

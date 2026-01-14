@@ -48,6 +48,7 @@ int main(int argc, char* argv[]) {
     load_records_from_csv(file, &data);
 
     // Statisctcs
+    printf("\n");
     FullStatistics full_statistics;
     init_full_statistics(&full_statistics);
 
@@ -58,6 +59,7 @@ int main(int argc, char* argv[]) {
     } else {
         print_month_stats(&full_statistics, options.month);
     }
+    printf("\n");
 
     return 0;
 }
