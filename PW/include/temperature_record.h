@@ -3,13 +3,13 @@
 #include <stdint.h>
 
 struct TemperatureRecord {
-    uint16_t year;
-    uint8_t month;
-    uint8_t day;
-    uint8_t hours;
-    uint8_t minutes;
-    int8_t temperature;
-    uint8_t valid;
+  uint16_t year;
+  uint8_t month;
+  uint8_t day;
+  uint8_t hours;
+  uint8_t minutes;
+  int8_t temperature;
+  uint8_t valid;
 };
 
 typedef struct TemperatureRecord TemperatureRecord;
@@ -17,9 +17,9 @@ typedef uint32_t capacity;
 
 // Dynamic array
 struct Records {
-    TemperatureRecord* records;  // ptr to first elem of data
-    capacity size;               // current size
-    capacity capacity;
+  TemperatureRecord *records; // ptr to first elem of data
+  capacity size;              // current size
+  capacity capacity;
 };
 
 typedef struct Records Records;
